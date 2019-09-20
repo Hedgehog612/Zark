@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		F47F0E512334367200F323C9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E502334367200F323C9 /* main.swift */; };
+		F47F0E59233436EF00F323C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E58233436EF00F323C9 /* Player.swift */; };
+		F47F0E5B233436FB00F323C9 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E5A233436FB00F323C9 /* Item.swift */; };
+		F47F0E5D2334370600F323C9 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E5C2334370600F323C9 /* Location.swift */; };
+		F47F0E5F2334370E00F323C9 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E5E2334370E00F323C9 /* Game.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,10 @@
 /* Begin PBXFileReference section */
 		F47F0E4D2334367200F323C9 /* Zark */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Zark; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47F0E502334367200F323C9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F47F0E58233436EF00F323C9 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		F47F0E5A233436FB00F323C9 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F47F0E5C2334370600F323C9 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		F47F0E5E2334370E00F323C9 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				F47F0E502334367200F323C9 /* main.swift */,
+				F47F0E58233436EF00F323C9 /* Player.swift */,
+				F47F0E5A233436FB00F323C9 /* Item.swift */,
+				F47F0E5C2334370600F323C9 /* Location.swift */,
+				F47F0E5E2334370E00F323C9 /* Game.swift */,
 			);
 			path = Zark;
 			sourceTree = "<group>";
@@ -119,6 +131,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F47F0E59233436EF00F323C9 /* Player.swift in Sources */,
+				F47F0E5F2334370E00F323C9 /* Game.swift in Sources */,
+				F47F0E5B233436FB00F323C9 /* Item.swift in Sources */,
+				F47F0E5D2334370600F323C9 /* Location.swift in Sources */,
 				F47F0E512334367200F323C9 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
