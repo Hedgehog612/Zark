@@ -71,6 +71,14 @@ class Location {
             return nil
         }
     }
+    
+    //------------------------------------------------------------------------------
+    // containsItem
+    // Returns whether or not a specified item is in this location.
+    //------------------------------------------------------------------------------
+    func containsItem(_ itemID: ItemID) -> Bool {
+        return contents.contains(itemID)
+    }
 }
 
 
@@ -82,6 +90,7 @@ enum LocationID {
     case BriefingRoom
     case MapRoom
     case GeodeRoom
+    case ViewingRoom
 }
 
 

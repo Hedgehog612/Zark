@@ -56,7 +56,8 @@ class Game {
             roomDescription: "This room looks like a briefing room. There is a large table in the center of the room. To the south is a sturdy wooden door. To the east you see another room strewn with paper. To the west is a heavy airlock.",
             east: .MapRoom,
             south: .LockerRoom,
-            west: .GeodeRoom
+            west: .GeodeRoom,
+            contents: [.Door]
         )
         
         addLocation(
@@ -73,6 +74,14 @@ class Game {
             roomDescription: "This room appears to be some kind of laboratory. Clean metal tables are piled high with rough, chipped rocks and cutting equipment",
             east: .BriefingRoom,
             contents: [.Geode]
+        )
+        
+        
+        addLocation(
+            id: .ViewingRoom,
+            fullName: "Viewing Room",
+            roomDescription: "The north side of this room is one smooth glass wall. Outside, you see massive coral growths. Occastionally, a fish flits by.",
+            south: .BriefingRoom
         )
 
 
@@ -91,6 +100,16 @@ class Game {
             roomDescription: "The largest table holds a rock the size of a pumpkin. Strewn around it are chipped, ruined saws and grinders.",
             dropDescription: "There is a large rock here.",
             examine: "You turn the rock over in your hands. It's lighter than you expected. You see a large keyhole set into one side of it."
+        )
+        
+        addItem(
+            id: .Door,
+            nameList: ["door"],
+            roomDescription: "There is a sturdy, locked door set into the north wall.",
+            dropDescription: "",
+            examine: "",
+            canPickUp: false,
+            properties: [.Unlocked : 0]
         )
     }
     
@@ -136,8 +155,8 @@ class Game {
     // addItem
     // Adds an item to the world
     //------------------------------------------------------------------------------
-    func addItem(id: ItemID, nameList: [String], roomDescription: String, dropDescription: String, examine: String) {
-        let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, dropDescription: dropDescription, examine: examine)
+    func addItem(id: ItemID, nameList: [String], roomDescription: String, dropDescription: String, examine: String, canPickUp: Bool = true, properties: [PropertyId : Int] = [:]) {
+        let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, dropDescription: dropDescription, examine: examine, canPickUp: canPickUp, properties: properties)
         items[id] = item
     }
     
@@ -185,6 +204,7 @@ class Game {
         "get":          get,
         "drop":         drop,
         "examine":      examine,
+        "use":          use,
     ]
     
     
@@ -243,5 +263,8 @@ class Game {
     }
     func examine(args: [String]) {
         player.examine(name: args[0])
+    }
+    func use(args: [String]) {
+        player.use(name: args[0])
     }
 }

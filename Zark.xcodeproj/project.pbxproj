@@ -50,7 +50,6 @@
 			isa = PBXGroup;
 			children = (
 				F47F0E4F2334367200F323C9 /* Zark */,
-				F47F0E4E2334367200F323C9 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +59,7 @@
 				F47F0E4D2334367200F323C9 /* Zark */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		F47F0E4F2334367200F323C9 /* Zark */ = {
@@ -70,6 +70,7 @@
 				F47F0E5A233436FB00F323C9 /* Item.swift */,
 				F47F0E5C2334370600F323C9 /* Location.swift */,
 				F47F0E5E2334370E00F323C9 /* Game.swift */,
+				F47F0E4E2334367200F323C9 /* Products */,
 			);
 			path = Zark;
 			sourceTree = "<group>";

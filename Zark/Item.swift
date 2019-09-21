@@ -23,18 +23,22 @@ class Item {
     var dropDescription: String
     var examine: String
     var pickedUp: Bool
+    var canPickUp: Bool
+    var properties: [PropertyId: Int]
    
     
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: ItemID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, dropDescription dropDescriptionIn: String, examine examineIn: String) {
+    init(id idIn: ItemID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, dropDescription dropDescriptionIn: String, examine examineIn: String, canPickUp canPickUpIn: Bool, properties propertiesIn: [PropertyId : Int]) {
         id = idIn
         nameList = nameListIn
         roomDescription = roomDescriptionIn
         dropDescription = dropDescriptionIn
         examine = examineIn
         pickedUp = false
+        canPickUp = canPickUpIn
+        properties = propertiesIn
     }
     
     
@@ -57,4 +61,11 @@ class Item {
 enum ItemID {
     case Geode
     case Key
+    case Door
+}
+
+enum PropertyId {
+    case Unlocked
+    case StandingWithTrappers
+    case FuseIsLit
 }
