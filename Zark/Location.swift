@@ -16,21 +16,21 @@ import Cocoa
 // Connections and contents link the room to other rooms and to items.
 //------------------------------------------------------------------------------
 class Location {
-    var id: String
+    var id: LocationID
     var fullName: String
     var roomDescription: String
-    var connections: [String: String]
-    var contents: [String]
+    var connections: [Direction: LocationID]
+    var contents: [ItemID]
     
     
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: String, fullName fullNameIn: String, roomDescription descriptionIn: String, contents contentsIn: [String] = []) {
+    init(id idIn: LocationID, fullName fullNameIn: String, roomDescription descriptionIn: String, contents contentsIn: [ItemID] = []) {
         id = idIn
         fullName = fullNameIn
         roomDescription = descriptionIn
-        connections = [String: String]()
+        connections = [:]
         contents = contentsIn
     }
     
@@ -39,7 +39,7 @@ class Location {
     // connect
     // Adds a connection to another room.
     //------------------------------------------------------------------------------
-    func connect(direction: String, destination: String) {
+    func connect(direction: Direction, destination: LocationID) {
         connections[direction] = destination
     }
     
@@ -71,4 +71,30 @@ class Location {
             return nil
         }
     }
+}
+
+
+//------------------------------------------------------------------------------
+// LocationID enum
+//------------------------------------------------------------------------------
+enum LocationID {
+    case LockerRoom
+    case BriefingRoom
+    case MapRoom
+    case GeodeRoom
+}
+
+
+//------------------------------------------------------------------------------
+// Direction enum
+//------------------------------------------------------------------------------
+enum Direction {
+    case North
+    case South
+    case East
+    case West
+    case Northeast
+    case Northwest
+    case Southeast
+    case Southwest
 }

@@ -14,8 +14,8 @@ import Cocoa
 //------------------------------------------------------------------------------
 class Game {
     var player: Player
-    var locations: [String: Location]
-    var items: [String: Item]
+    var locations: [LocationID: Location]
+    var items: [ItemID: Item]
     
     
     //------------------------------------------------------------------------------
@@ -23,10 +23,10 @@ class Game {
     //------------------------------------------------------------------------------
     init() {
         // Create the locations
-        locations = [String: Location]()
+        locations = [:]
         
         // Create the player
-        player = Player(location: "lockerRoom")
+        player = Player(location: .LockerRoom)
         
         // Items
         items = [:]
@@ -44,48 +44,48 @@ class Game {
     func buildWorld() {
         // Create all the locations
         addLocation(
-            id: "lockerRoom",
+            id: .LockerRoom,
             fullName: "Locker room",
             roomDescription: "You are in a large empty room with some lockers. To the north is a sturdy wooden door.",
-            north: "briefingRoom"
+            north: .BriefingRoom
         )
         
         addLocation(
-            id: "briefingRoom",
+            id: .BriefingRoom,
             fullName: "Briefing room",
             roomDescription: "This room looks like a briefing room. There is a large table in the center of the room. To the south is a sturdy wooden door. To the east you see another room strewn with paper. To the west is a heavy airlock.",
-            east: "mapRoom",
-            south: "lockerRoom",
-            west: "geodeRoom"
+            east: .MapRoom,
+            south: .LockerRoom,
+            west: .GeodeRoom
         )
         
         addLocation(
-            id: "mapRoom",
+            id: .MapRoom,
             fullName: "Map room",
             roomDescription: "The walls and tables in this room are covered in maps. They appear to be mostly depicting tectonics, excavations, and other geological data. To the west, you see the briefing room.",
-            west: "briefingRoom",
-            contents: ["key"]
+            west: .BriefingRoom,
+            contents: [.Key]
             )
         
         addLocation(
-            id: "geodeRoom",
+            id: .GeodeRoom,
             fullName: "Geode room",
             roomDescription: "This room appears to be some kind of laboratory. Clean metal tables are piled high with rough, chipped rocks and cutting equipment",
-            east: "briefingRoom",
-            contents: ["geode"]
+            east: .BriefingRoom,
+            contents: [.Geode]
         )
 
 
         // Create all the items
         addItem(
-            id: "key",
+            id: .Key,
             nameList: ["key", "large key", "ornate key", "large ornate key"],
             roomDescription: "There is a large, ornate key lying on the table.",
             examine: "A large metal key decorated with curves and twists of metal along its length. The teeth are equally complex and strange."
         )
         
         addItem(
-            id: "geode",
+            id: .Geode,
             nameList: ["rock", "geode", "large rock"],
             roomDescription: "The largest table holds a rock the size of a pumpkin. Strewn around it are chipped, ruined saws and grinders.",
             examine: "You turn the rock over in your hands. It's lighter than you expected. You see a large keyhole set into one side of it."
@@ -97,35 +97,35 @@ class Game {
     // addLocation
     // Creates a location and adds it to the world.
     //------------------------------------------------------------------------------
-    func addLocation(id: String, fullName: String, roomDescription: String, north: String? = nil, east: String? = nil, south: String? = nil, west: String? = nil, northEast: String? = nil, southEast: String? = nil, southWest: String? = nil, northWest: String? = nil, contents: [String] = []) {
+    func addLocation(id: LocationID, fullName: String, roomDescription: String, north: LocationID? = nil, east: LocationID? = nil, south: LocationID? = nil, west: LocationID? = nil, northEast: LocationID? = nil, southEast: LocationID? = nil, southWest: LocationID? = nil, northWest: LocationID? = nil, contents: [ItemID] = []) {
         // Create the lcoation and add it to the world
         let location = Location(id: id, fullName: fullName, roomDescription: roomDescription, contents: contents)
         locations[id] = location
         
         // Connect it to other locations
         if north != nil {
-            location.connect(direction: "North", destination: north!)
+            location.connect(direction: .North, destination: north!)
         }
         if east != nil {
-            location.connect(direction: "East", destination: east!)
+            location.connect(direction: .East, destination: east!)
         }
         if south != nil {
-            location.connect(direction: "South", destination: south!)
+            location.connect(direction: .South, destination: south!)
         }
         if west != nil {
-            location.connect(direction: "West", destination: west!)
+            location.connect(direction: .West, destination: west!)
         }
         if northEast != nil {
-            location.connect(direction: "Northeast", destination: northEast!)
+            location.connect(direction: .Northeast, destination: northEast!)
         }
         if southEast != nil {
-            location.connect(direction: "Southeast", destination: southEast!)
+            location.connect(direction: .Southeast, destination: southEast!)
         }
         if southWest != nil {
-            location.connect(direction: "Southwest", destination: southWest!)
+            location.connect(direction: .Southwest, destination: southWest!)
         }
         if northWest != nil {
-            location.connect(direction: "northWest", destination: northWest!)
+            location.connect(direction: .Northwest, destination: northWest!)
         }
     }
     
@@ -134,7 +134,7 @@ class Game {
     // addItem
     // Adds an item to the world
     //------------------------------------------------------------------------------
-    func addItem(id: String, nameList: [String], roomDescription: String, examine: String) {
+    func addItem(id: ItemID, nameList: [String], roomDescription: String, examine: String) {
         let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, examine: examine)
         items[id] = item
     }
@@ -144,7 +144,7 @@ class Game {
     // locationFromId
     // Gets the location with a specified id.
     //------------------------------------------------------------------------------
-    func locationFromId(_ id: String) -> Location? {
+    func locationFromId(_ id: LocationID) -> Location? {
         return locations[id]
     }
     
@@ -153,7 +153,7 @@ class Game {
     // itemFromId
     // Returns the item with a specified id
     //------------------------------------------------------------------------------
-    func itemFromId(_ id: String) -> Item? {
+    func itemFromId(_ id: ItemID) -> Item? {
         return items[id]
     }
     
@@ -193,11 +193,11 @@ class Game {
     func takeTurn() {
         print("\n")
         locationFromId(player.location)!.describe()
-        
-        guard let input = readLine() else {
-            return
+        var input: String?
+        while input == nil {
+            input = readLine()
         }
-        let parts = input.lowercased().components(separatedBy: " ")
+        let parts = input!.lowercased().components(separatedBy: " ")
         if let function = commands[parts[0]] {
             function(self)(Array(parts[1...]))
         } else {
@@ -210,28 +210,28 @@ class Game {
     // Command handlers. These are mostly just stubs.
     //------------------------------------------------------------------------------
     func goNorth(args: [String]) {
-        player.move(direction: "North")
+        player.move(direction: .North)
     }
     func goEast(args: [String]) {
-        player.move(direction: "East")
+        player.move(direction: .East)
     }
     func goSouth(args: [String]) {
-        player.move(direction: "South")
+        player.move(direction: .South)
     }
     func goWest(args: [String]) {
-        player.move(direction: "West")
+        player.move(direction: .West)
     }
     func goNorthEast(args: [String]) {
-        player.move(direction: "Northeast")
+        player.move(direction: .Northeast)
     }
     func goSouthEast(args: [String]) {
-        player.move(direction: "Southeast")
+        player.move(direction: .Southeast)
     }
     func goSouthWest(args: [String]) {
-        player.move(direction: "Southwest")
+        player.move(direction: .Southwest)
     }
     func goNorthWest(args: [String]) {
-        player.move(direction: "Northwest")
+        player.move(direction: .Northwest)
     }
     func get(args: [String]) {
         player.get(name: args[0])

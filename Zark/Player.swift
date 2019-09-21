@@ -13,14 +13,14 @@ import Cocoa
 // Player
 //------------------------------------------------------------------------------
 class Player {
-    var inventory: [String]
-    var location: String
+    var inventory: [ItemID]
+    var location: LocationID
     
     
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(location locationIn: String) {
+    init(location locationIn: LocationID) {
         inventory = []
         location = locationIn
     }
@@ -30,7 +30,7 @@ class Player {
     // move
     // This function moves the player between connected locations
     //------------------------------------------------------------------------------
-    func move(direction: String) {
+    func move(direction: Direction) {
         if let newLocation = game.locationFromId(location)!.connections[direction] {
             location = newLocation
         } else {

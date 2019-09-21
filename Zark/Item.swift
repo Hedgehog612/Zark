@@ -17,7 +17,7 @@ import Cocoa
 // Examine is the text you get when you examine an item in your inventory.
 //------------------------------------------------------------------------------
 class Item {
-    var id: String
+    var id: ItemID
     var nameList: [String]
     var roomDescription: String
     var examine: String
@@ -26,10 +26,19 @@ class Item {
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: String, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, examine examineIn: String) {
+    init(id idIn: ItemID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, examine examineIn: String) {
         id = idIn
         nameList = nameListIn
         roomDescription = roomDescriptionIn
         examine = examineIn
     }
+}
+
+
+//------------------------------------------------------------------------------
+// ItemID enum
+//------------------------------------------------------------------------------
+enum ItemID {
+    case Geode
+    case Key
 }
