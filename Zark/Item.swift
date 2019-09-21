@@ -14,13 +14,15 @@ import Cocoa
 //Description is the text you get when you examine an item in a room.
 //Examine is the text you get when you examine an item in your inventory.
 class Item {
-    var names: [String]
-    var description: String
+    var id: String
+    var nameList: [String]
+    var roomDescription: String
     var examine: String
     
-    init(names namesIn: [String], description descriptionIn: String, examine examineIn: String) {
-        names = namesIn
-        description = descriptionIn
+    init(id idIn: String, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, examine examineIn: String) {
+        id = idIn
+        nameList = nameListIn
+        roomDescription = roomDescriptionIn
         examine = examineIn
     }
 }

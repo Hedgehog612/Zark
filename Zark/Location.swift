@@ -14,18 +14,18 @@ import Cocoa
 //Description prints when the player is in the room.
 //Connections and contents link the room to other rooms and to items.
 class Location {
-    var name: String
+    var id: String
     var fullName: String
-    var description: String
+    var roomDescription: String
     var connections: [String: String]
-    var contents: [Item]
+    var contents: [String]
     
-    init(name nameIn: String, fullName fullNameIn: String, description descriptionIn: String, contents contentsIn: [Item]?) {
-        name = nameIn
+    init(id idIn: String, fullName fullNameIn: String, roomDescription descriptionIn: String, contents contentsIn: [String] = []) {
+        id = idIn
         fullName = fullNameIn
-        description = descriptionIn
+        roomDescription = descriptionIn
         connections = [String: String]()
-        contents = [Item]()
+        contents = contentsIn
     }
     
     
@@ -38,11 +38,21 @@ class Location {
     
     //Describe prints information about the room and about any items in the room.
     func describe() {
-        print("calling describe")
-        print(description)
-        for item in contents {
-            print("item description")
-            print(item.description)
+        print(roomDescription)
+        for id in contents {
+            print(game.getItem(id)!.roomDescription)
+        }
+    }
+    
+    
+    func findItem(name: String) -> Item? {
+        guard let item = game.getItemFromName(name) else {
+            return nil
+        }
+        if contents.contains(item.id) {
+            return item
+        } else {
+            return nil
         }
     }
 }

@@ -9,7 +9,7 @@
 import Cocoa
 
 class Player {
-    var inventory: [Item]
+    var inventory: [String]
     var location: String
     
     init(location locationIn: String) {
@@ -31,53 +31,47 @@ class Player {
     
     //Get
     //This function picks up an item and puts it in the player's inventory
-    func get(item: String) {
-        if let itemList = game.getLocation(location)?.contents {
-            var objectCount = 0
-            for object in itemList {
-                if object.names.contains(item) {
-                    inventory.append(object)
-                    game.getLocation(location)?.contents.remove(at: objectCount)
-                }
-                objectCount = objectCount + 1
-            }
-        } else{
-            print("Could not find item.")
+    func get(name: String) {
+        guard let item = game.getLocation(location)!.findItem(name: name) else {
+            print("Item not found")
+            return
         }
+        game.getLocation(location)!.contents.removeAll(where: { $0 == item.id })
+        inventory.append(item.id)
     }
     
     
     //Drop
     //This function removes an item from the player's inventory and places it in the player's location.
-    func drop(item: String) {
-        var foundItem = false
-        for object in inventory {
-            var objectCount = 0
-            if object.names.contains(item) {
-                game.getLocation(location)?.contents.append(object)
-                inventory.remove(at: objectCount)
-                foundItem = true
-            }
-            objectCount = objectCount + 1
+    func drop(name: String) {
+        guard let item = findItem(name) else {
+            print("Item not found")
+            return
         }
-        if foundItem != true {
-            print("Could not find item.")
-        }
+        inventory.removeAll(where: { $0 == item.id })
+        game.getLocation(location)!.contents.append(item.id)
     }
     
     
     //Examine
     //This function gives more detailed information about an item in your inventory.
-    func examine(item: String) {
-        var foundItem = false
-        for object in inventory {
-            if object.names.contains(item) {
-                print(object.description)
-                foundItem = true
-            }
+    func examine(name: String) {
+        guard let item = findItem(name) else {
+            print("Item not found")
+            return
         }
-        if foundItem != true {
-            print("Could not find item.")
+        print(item.examine)
+    }
+    
+    
+    func findItem(_ name: String) -> Item? {
+        guard let item = game.getItemFromName(name) else {
+            return nil
+        }
+        if inventory.contains(item.id) {
+            return item
+        } else {
+            return nil
         }
     }
 }
