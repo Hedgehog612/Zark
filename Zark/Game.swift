@@ -8,31 +8,41 @@
 
 import Cocoa
 
+
+//------------------------------------------------------------------------------
+// Game
+//------------------------------------------------------------------------------
 class Game {
     var player: Player
     var locations: [String: Location]
     var items: [String: Item]
     
+    
+    //------------------------------------------------------------------------------
+    // Initializer
+    //------------------------------------------------------------------------------
     init() {
         // Create the locations
         locations = [String: Location]()
         
-        
         // Create the player
         player = Player(location: "lockerRoom")
         
-        
         // Items
         items = [:]
-        
         
         buildWorld()
     }
     
     
-    //Build World
-    //This creates all the locations in the game world and includes instructions on how to join them together. It contains instructions for placing items in their locations.
+    //------------------------------------------------------------------------------
+    // buildWorld
+    // Creates all the locations in the game world and includes instructions
+    // on how to join them together. It contains instructions for placing items in
+    // their locations.
+    //------------------------------------------------------------------------------
     func buildWorld() {
+        // Create all the locations
         addLocation(
             id: "lockerRoom",
             fullName: "Locker room",
@@ -66,6 +76,7 @@ class Game {
         )
 
 
+        // Create all the items
         addItem(
             id: "key",
             nameList: ["key", "large key", "ornate key", "large ornate key"],
@@ -82,11 +93,16 @@ class Game {
     }
     
     
-    //Add Location
-    //This function stitches together the game world and inserts items into the game world.
+    //------------------------------------------------------------------------------
+    // addLocation
+    // Creates a location and adds it to the world.
+    //------------------------------------------------------------------------------
     func addLocation(id: String, fullName: String, roomDescription: String, north: String? = nil, east: String? = nil, south: String? = nil, west: String? = nil, northEast: String? = nil, southEast: String? = nil, southWest: String? = nil, northWest: String? = nil, contents: [String] = []) {
+        // Create the lcoation and add it to the world
         let location = Location(id: id, fullName: fullName, roomDescription: roomDescription, contents: contents)
         locations[id] = location
+        
+        // Connect it to other locations
         if north != nil {
             location.connect(direction: "North", destination: north!)
         }
@@ -114,31 +130,47 @@ class Game {
     }
     
     
+    //------------------------------------------------------------------------------
+    // addItem
+    // Adds an item to the world
+    //------------------------------------------------------------------------------
     func addItem(id: String, nameList: [String], roomDescription: String, examine: String) {
         let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, examine: examine)
         items[id] = item
     }
     
+    
     //------------------------------------------------------------------------------
-    //Get Location
-    //This converts location name strings into the Location class.
-    func getLocation(_ id: String) -> Location? {
+    // locationFromId
+    // Gets the location with a specified id.
+    //------------------------------------------------------------------------------
+    func locationFromId(_ id: String) -> Location? {
         return locations[id]
     }
     
     
-    func getItem(_ id: String) -> Item? {
+    //------------------------------------------------------------------------------
+    // itemFromId
+    // Returns the item with a specified id
+    //------------------------------------------------------------------------------
+    func itemFromId(_ id: String) -> Item? {
         return items[id]
     }
     
     
-    func getItemFromName(_ name: String) -> Item? {
+    //------------------------------------------------------------------------------
+    // itemFromName
+    // Returns the item with a specified human-friendly name
+    //------------------------------------------------------------------------------
+    func itemFromName(_ name: String) -> Item? {
         return items.values.first(where: { $0.nameList.contains(name) })
     }
 
     
-    //Commands
-    //This lays out what commands the game can parse.
+    //------------------------------------------------------------------------------
+    // commands
+    // Lays out what commands the game can parse.
+    //------------------------------------------------------------------------------
     let commands: [String: (Game) -> ([String]) -> ()] = [
         "north":        goNorth,
         "east":         goEast,
@@ -154,11 +186,13 @@ class Game {
     ]
     
     
-    //Take Turn
-    //This function handles the basic turn loop and accepts commands.
+    //------------------------------------------------------------------------------
+    // takeTurn
+    // Handles the basic turn loop and accepts commands.
+    //------------------------------------------------------------------------------
     func takeTurn() {
         print("\n")
-        getLocation(player.location)!.describe()
+        locationFromId(player.location)!.describe()
         
         guard let input = readLine() else {
             return
@@ -170,7 +204,11 @@ class Game {
             print("Command not recognized.")
         }
     }
-        
+    
+    
+    //------------------------------------------------------------------------------
+    // Command handlers. These are mostly just stubs.
+    //------------------------------------------------------------------------------
     func goNorth(args: [String]) {
         player.move(direction: "North")
     }

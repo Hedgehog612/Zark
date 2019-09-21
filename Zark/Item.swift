@@ -9,16 +9,23 @@
 import Cocoa
 
 
-//Item class
-//Names is an array of all the things that you can call the item. For example: Key, Ornate key, Large key, Ornate large key.
-//Description is the text you get when you examine an item in a room.
-//Examine is the text you get when you examine an item in your inventory.
+//------------------------------------------------------------------------------
+// Item
+// Names is an array of all the things that you can call the item. For example:
+//      Key, Ornate key, Large key, Ornate large key.
+// Description is the text you get when you examine an item in a room.
+// Examine is the text you get when you examine an item in your inventory.
+//------------------------------------------------------------------------------
 class Item {
     var id: String
     var nameList: [String]
     var roomDescription: String
     var examine: String
+   
     
+    //------------------------------------------------------------------------------
+    // Initializer
+    //------------------------------------------------------------------------------
     init(id idIn: String, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, examine examineIn: String) {
         id = idIn
         nameList = nameListIn

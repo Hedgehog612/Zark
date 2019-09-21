@@ -9,10 +9,12 @@
 import Cocoa
 
 
-//Location class
-//Name and fullname name the room with and without camelCase.
-//Description prints when the player is in the room.
-//Connections and contents link the room to other rooms and to items.
+//------------------------------------------------------------------------------
+// Location
+// Name and fullname name the room with and without camelCase.
+// Description prints when the player is in the room.
+// Connections and contents link the room to other rooms and to items.
+//------------------------------------------------------------------------------
 class Location {
     var id: String
     var fullName: String
@@ -20,6 +22,10 @@ class Location {
     var connections: [String: String]
     var contents: [String]
     
+    
+    //------------------------------------------------------------------------------
+    // Initializer
+    //------------------------------------------------------------------------------
     init(id idIn: String, fullName fullNameIn: String, roomDescription descriptionIn: String, contents contentsIn: [String] = []) {
         id = idIn
         fullName = fullNameIn
@@ -29,24 +35,34 @@ class Location {
     }
     
     
-    //Connect
-    //Connect builds connections between rooms.
+    //------------------------------------------------------------------------------
+    // connect
+    // Adds a connection to another room.
+    //------------------------------------------------------------------------------
     func connect(direction: String, destination: String) {
         connections[direction] = destination
     }
     
-    
-    //Describe prints information about the room and about any items in the room.
+
+    //------------------------------------------------------------------------------
+    // describe
+    // Prints information about the room and about any items in the room.
+    //------------------------------------------------------------------------------
     func describe() {
         print(roomDescription)
         for id in contents {
-            print(game.getItem(id)!.roomDescription)
+            print(game.itemFromId(id)!.roomDescription)
         }
     }
     
     
-    func findItem(name: String) -> Item? {
-        guard let item = game.getItemFromName(name) else {
+    //------------------------------------------------------------------------------
+    // itemFromName
+    // Finds an item with a specified human-friendly name and checks if it's present
+    // in this location.
+    //------------------------------------------------------------------------------
+    func itemFromName(name: String) -> Item? {
+        guard let item = game.itemFromName(name) else {
             return nil
         }
         if contents.contains(item.id) {
