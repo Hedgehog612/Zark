@@ -51,7 +51,7 @@ class Location {
     func describe() {
         print(roomDescription)
         for id in contents {
-            print(game.itemFromId(id)!.roomDescription)
+            game.itemFromId(id).describe()
         }
     }
     

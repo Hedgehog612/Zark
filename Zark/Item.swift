@@ -20,17 +20,33 @@ class Item {
     var id: ItemID
     var nameList: [String]
     var roomDescription: String
+    var dropDescription: String
     var examine: String
+    var pickedUp: Bool
    
     
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: ItemID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, examine examineIn: String) {
+    init(id idIn: ItemID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, dropDescription dropDescriptionIn: String, examine examineIn: String) {
         id = idIn
         nameList = nameListIn
         roomDescription = roomDescriptionIn
+        dropDescription = dropDescriptionIn
         examine = examineIn
+        pickedUp = false
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // Describe
+    //------------------------------------------------------------------------------
+    func describe() {
+        if pickedUp == false {
+            print(roomDescription)
+        } else {
+            print(dropDescription)
+        }
     }
 }
 

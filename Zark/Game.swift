@@ -81,6 +81,7 @@ class Game {
             id: .Key,
             nameList: ["key", "large key", "ornate key", "large ornate key"],
             roomDescription: "There is a large, ornate key lying on the table.",
+            dropDescription: "There is a large, ornate key here.",
             examine: "A large metal key decorated with curves and twists of metal along its length. The teeth are equally complex and strange."
         )
         
@@ -88,6 +89,7 @@ class Game {
             id: .Geode,
             nameList: ["rock", "geode", "large rock"],
             roomDescription: "The largest table holds a rock the size of a pumpkin. Strewn around it are chipped, ruined saws and grinders.",
+            dropDescription: "There is a large rock here.",
             examine: "You turn the rock over in your hands. It's lighter than you expected. You see a large keyhole set into one side of it."
         )
     }
@@ -134,8 +136,8 @@ class Game {
     // addItem
     // Adds an item to the world
     //------------------------------------------------------------------------------
-    func addItem(id: ItemID, nameList: [String], roomDescription: String, examine: String) {
-        let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, examine: examine)
+    func addItem(id: ItemID, nameList: [String], roomDescription: String, dropDescription: String, examine: String) {
+        let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, dropDescription: dropDescription, examine: examine)
         items[id] = item
     }
     
@@ -144,8 +146,8 @@ class Game {
     // locationFromId
     // Gets the location with a specified id.
     //------------------------------------------------------------------------------
-    func locationFromId(_ id: LocationID) -> Location? {
-        return locations[id]
+    func locationFromId(_ id: LocationID) -> Location {
+        return locations[id]!
     }
     
     
@@ -153,8 +155,8 @@ class Game {
     // itemFromId
     // Returns the item with a specified id
     //------------------------------------------------------------------------------
-    func itemFromId(_ id: ItemID) -> Item? {
-        return items[id]
+    func itemFromId(_ id: ItemID) -> Item {
+        return items[id]!
     }
     
     
@@ -192,7 +194,7 @@ class Game {
     //------------------------------------------------------------------------------
     func takeTurn() {
         print("\n")
-        locationFromId(player.location)!.describe()
+        locationFromId(player.location).describe()
         var input: String?
         while input == nil {
             input = readLine()

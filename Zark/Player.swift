@@ -31,7 +31,7 @@ class Player {
     // This function moves the player between connected locations
     //------------------------------------------------------------------------------
     func move(direction: Direction) {
-        if let newLocation = game.locationFromId(location)!.connections[direction] {
+        if let newLocation = game.locationFromId(location).connections[direction] {
             location = newLocation
         } else {
             print("Cannot move there")
@@ -44,12 +44,13 @@ class Player {
     // Picks up an item and puts it in the player's inventory
     //------------------------------------------------------------------------------
     func get(name: String) {
-        guard let item = game.locationFromId(location)!.itemFromName(name: name) else {
+        guard let item = game.locationFromId(location).itemFromName(name: name) else {
             print("Item not found")
             return
         }
-        game.locationFromId(location)!.contents.removeAll(where: { $0 == item.id })
+        game.locationFromId(location).contents.removeAll(where: { $0 == item.id })
         inventory.append(item.id)
+        item.pickedUp = true
     }
     
     
@@ -64,7 +65,7 @@ class Player {
             return
         }
         inventory.removeAll(where: { $0 == item.id })
-        game.locationFromId(location)!.contents.append(item.id)
+        game.locationFromId(location).contents.append(item.id)
     }
     
     
