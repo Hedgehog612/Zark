@@ -26,12 +26,10 @@ class Game {
         locations = [:]
         
         // Create the player
-        player = Player(location: .LockerRoom)
+        player = Player()
         
         // Items
         items = [:]
-        
-        buildWorld()
     }
     
     
@@ -42,7 +40,9 @@ class Game {
     // their locations.
     //------------------------------------------------------------------------------
     func buildWorld() {
+        //------------------------------------------------------------------------------
         // Create all the locations
+        //------------------------------------------------------------------------------
         addLocation(
             id: .LockerRoom,
             fullName: "Locker room",
@@ -85,7 +85,9 @@ class Game {
         )
 
 
+        //------------------------------------------------------------------------------
         // Create all the items
+        //------------------------------------------------------------------------------
         addItem(
             id: .Key,
             nameList: ["key", "large key", "ornate key", "large ornate key"],
@@ -111,6 +113,12 @@ class Game {
             canPickUp: false,
             properties: [.Unlocked : 0]
         )
+        
+        
+        //------------------------------------------------------------------------------
+        // Set up the player
+        //------------------------------------------------------------------------------
+        player.setLocation(.LockerRoom)
     }
     
     
@@ -214,7 +222,7 @@ class Game {
     //------------------------------------------------------------------------------
     func takeTurn() {
         print("\n")
-        locationFromId(player.location).describe()
+        player.location.describe()
         var input: String?
         while input == nil {
             input = readLine()
