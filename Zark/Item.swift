@@ -62,10 +62,16 @@ enum ItemID {
     case Geode
     case Key
     case Door
+    case Button
+    case Lamp
+    case Crystal
+    case Lantern
 }
 
 enum PropertyId {
     case Unlocked
     case StandingWithTrappers
     case FuseIsLit
+    case Light
+    case Fuel
 }

@@ -91,6 +91,9 @@ enum LocationID {
     case MapRoom
     case GeodeRoom
     case ViewingRoom
+    case DarkRoom
+    case ArchiveRoom
+    case MoonRoom
 }
 
 

@@ -26,12 +26,10 @@ class Game {
         locations = [:]
         
         // Create the player
-        player = Player(location: .LockerRoom)
+        player = Player()
         
         // Items
         items = [:]
-        
-        buildWorld()
     }
     
     
@@ -42,7 +40,9 @@ class Game {
     // their locations.
     //------------------------------------------------------------------------------
     func buildWorld() {
+        //------------------------------------------------------------------------------
         // Create all the locations
+        //------------------------------------------------------------------------------
         addLocation(
             id: .LockerRoom,
             fullName: "Locker room",
@@ -71,21 +71,49 @@ class Game {
         addLocation(
             id: .GeodeRoom,
             fullName: "Geode room",
-            roomDescription: "This room appears to be some kind of laboratory. Clean metal tables are piled high with rough, chipped rocks and cutting equipment",
+            roomDescription: "This room appears to be some kind of laboratory. Clean metal tables are piled high with rough, chipped rocks and cutting equipment.",
             east: .BriefingRoom,
             contents: [.Geode]
         )
         
         
         addLocation(
+            id: .MoonRoom,
+            fullName: "Moon Pool room",
+            roomDescription: "This circular room contains a thin walkway around a large pool, which occupies the majority of the space. Lights shine into the water, and you can faintly see the ocean floor through the water."
+        )
+        
+        
+        addLocation(
             id: .ViewingRoom,
             fullName: "Viewing Room",
-            roomDescription: "The north side of this room is one smooth glass wall. Outside, you see massive coral growths. Occastionally, a fish flits by.",
-            south: .BriefingRoom
+            roomDescription: "The north side of this room is one clear glass wall. Outside, you see a sprawling growth of coral. Occasionally, a fish flits by.",
+            south: .BriefingRoom,
+            west: .DarkRoom,
+            contents: [.Button]
+        )
+        
+        
+        addLocation(
+            id: .DarkRoom,
+            fullName: "Dark Room",
+            roomDescription: "The corridor ahead of you is pitch-black. You can't see any futher.",
+            east: .ViewingRoom,
+            contents: [.Lamp]
+        )
+        
+        
+        addLocation(
+            id: .ArchiveRoom,
+            fullName: "Archive Room",
+            roomDescription: "This room is crammed with records and files. They overflow from cabinets and spill across the ground.",
+            east: .DarkRoom
         )
 
 
+        //------------------------------------------------------------------------------
         // Create all the items
+        //------------------------------------------------------------------------------
         addItem(
             id: .Key,
             nameList: ["key", "large key", "ornate key", "large ornate key"],
@@ -96,10 +124,11 @@ class Game {
         
         addItem(
             id: .Geode,
-            nameList: ["rock", "geode", "large rock"],
-            roomDescription: "The largest table holds a rock the size of a pumpkin. Strewn around it are chipped, ruined saws and grinders.",
+            nameList: ["rock", "large rock"],
+            roomDescription: "The largest table holds a rock the size of a pumpkin. Strewn around it are chipped, ruined saws and grinders. You see a large keyhole set into one side of it.",
             dropDescription: "There is a large rock here.",
-            examine: "You turn the rock over in your hands. It's lighter than you expected. You see a large keyhole set into one side of it."
+            examine: "You turn the rock over in your hands. It's lighter than you expected. You see a large keyhole set into one side of it.",
+            canPickUp: false
         )
         
         addItem(
@@ -111,6 +140,54 @@ class Game {
             canPickUp: false,
             properties: [.Unlocked : 0]
         )
+        
+        
+        addItem(
+            id: .Lantern,
+            nameList: ["lantern"],
+            roomDescription: "There is an old lantern here.",
+            dropDescription: "There is an old lantern here.",
+            examine: "You examine the lantern. Oil level reference.",
+            canPickUp: true,
+            properties: [.Fuel : 10]
+        )
+        
+        
+        addItem(
+            id: .Lamp,
+            nameList: ["lamp"],
+            roomDescription: "An unlit lamp rests on the ground. ",
+            dropDescription: "",
+            examine: "",
+            canPickUp: false,
+            properties: [.Light : 0]
+        )
+        
+        
+        addItem(
+            id: .Button,
+            nameList: ["button"],
+            roomDescription: "There's a blue button on the west wall. ",
+            dropDescription: "",
+            examine: "",
+            canPickUp: false
+        )
+        
+        
+        addItem(
+            id: .Crystal,
+            nameList: ["crystal"],
+            roomDescription: "A purple crystal the size of your hand rests in one hemisphere of the geode. ",
+            dropDescription: "There is a purple crystal here.",
+            examine: "The crystal is beautiful, many-faceted, and shining.",
+            properties: [.Unlocked : 0]
+        )
+        
+        
+        //------------------------------------------------------------------------------
+        // Set up the player
+        //------------------------------------------------------------------------------
+        player.setLocation(.LockerRoom)
     }
     
     
@@ -214,7 +291,7 @@ class Game {
     //------------------------------------------------------------------------------
     func takeTurn() {
         print("\n")
-        locationFromId(player.location).describe()
+        player.location.describe()
         var input: String?
         while input == nil {
             input = readLine()
