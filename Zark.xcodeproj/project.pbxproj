@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F45A2C7E2337FAA100F5685C /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45A2C7D2337FAA100F5685C /* Entity.swift */; };
+		F45A2C802337FFB500F5685C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45A2C7F2337FFB500F5685C /* Key.swift */; };
+		F45A2C8223393D4500F5685C /* Lantern.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45A2C8123393D4500F5685C /* Lantern.swift */; };
+		F45A2C84233947C500F5685C /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45A2C83233947C500F5685C /* Button.swift */; };
 		F47F0E512334367200F323C9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E502334367200F323C9 /* main.swift */; };
 		F47F0E59233436EF00F323C9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E58233436EF00F323C9 /* Player.swift */; };
 		F47F0E5B233436FB00F323C9 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47F0E5A233436FB00F323C9 /* Item.swift */; };
@@ -27,6 +31,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F45A2C7D2337FAA100F5685C /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		F45A2C7F2337FFB500F5685C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		F45A2C8123393D4500F5685C /* Lantern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lantern.swift; sourceTree = "<group>"; };
+		F45A2C83233947C500F5685C /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		F47F0E4D2334367200F323C9 /* Zark */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Zark; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47F0E502334367200F323C9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F47F0E58233436EF00F323C9 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -69,8 +77,12 @@
 				F47F0E58233436EF00F323C9 /* Player.swift */,
 				F47F0E5A233436FB00F323C9 /* Item.swift */,
 				F47F0E5C2334370600F323C9 /* Location.swift */,
+				F45A2C7D2337FAA100F5685C /* Entity.swift */,
 				F47F0E5E2334370E00F323C9 /* Game.swift */,
 				F47F0E4E2334367200F323C9 /* Products */,
+				F45A2C7F2337FFB500F5685C /* Key.swift */,
+				F45A2C8123393D4500F5685C /* Lantern.swift */,
+				F45A2C83233947C500F5685C /* Button.swift */,
 			);
 			path = Zark;
 			sourceTree = "<group>";
@@ -133,10 +145,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45A2C802337FFB500F5685C /* Key.swift in Sources */,
 				F47F0E59233436EF00F323C9 /* Player.swift in Sources */,
 				F47F0E5F2334370E00F323C9 /* Game.swift in Sources */,
+				F45A2C7E2337FAA100F5685C /* Entity.swift in Sources */,
+				F45A2C8223393D4500F5685C /* Lantern.swift in Sources */,
 				F47F0E5B233436FB00F323C9 /* Item.swift in Sources */,
 				F47F0E5D2334370600F323C9 /* Location.swift in Sources */,
+				F45A2C84233947C500F5685C /* Button.swift in Sources */,
 				F47F0E512334367200F323C9 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

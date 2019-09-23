@@ -15,23 +15,23 @@ import Cocoa
 // Description prints when the player is in the room.
 // Connections and contents link the room to other rooms and to items.
 //------------------------------------------------------------------------------
-class Location {
-    var id: LocationID
+class Location: Entity {
     var fullName: String
     var roomDescription: String
-    var connections: [Direction: LocationID]
-    var contents: [ItemID]
+    var connections: [Direction: ID]
+    var contents: [ID]
     
     
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: LocationID, fullName fullNameIn: String, roomDescription descriptionIn: String, contents contentsIn: [ItemID] = []) {
-        id = idIn
+    init(id idIn: ID, fullName fullNameIn: String, roomDescription descriptionIn: String, contents contentsIn: [ID] = [], properties propertiesIn: [PropertyId: Int]) {
         fullName = fullNameIn
         roomDescription = descriptionIn
         connections = [:]
         contents = contentsIn
+        
+        super.init(id: idIn, properties: propertiesIn)
     }
     
     
@@ -39,7 +39,7 @@ class Location {
     // connect
     // Adds a connection to another room.
     //------------------------------------------------------------------------------
-    func connect(direction: Direction, destination: LocationID) {
+    func connect(direction: Direction, destination: ID) {
         connections[direction] = destination
     }
     
@@ -76,24 +76,9 @@ class Location {
     // containsItem
     // Returns whether or not a specified item is in this location.
     //------------------------------------------------------------------------------
-    func containsItem(_ itemID: ItemID) -> Bool {
+    func containsItem(_ itemID: ID) -> Bool {
         return contents.contains(itemID)
     }
-}
-
-
-//------------------------------------------------------------------------------
-// LocationID enum
-//------------------------------------------------------------------------------
-enum LocationID {
-    case LockerRoom
-    case BriefingRoom
-    case MapRoom
-    case GeodeRoom
-    case ViewingRoom
-    case DarkRoom
-    case ArchiveRoom
-    case MoonRoom
 }
 
 

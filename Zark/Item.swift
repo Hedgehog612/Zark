@@ -16,29 +16,27 @@ import Cocoa
 // Description is the text you get when you examine an item in a room.
 // Examine is the text you get when you examine an item in your inventory.
 //------------------------------------------------------------------------------
-class Item {
-    var id: ItemID
+class Item: Entity {
     var nameList: [String]
     var roomDescription: String
     var dropDescription: String
     var examine: String
     var pickedUp: Bool
     var canPickUp: Bool
-    var properties: [PropertyId: Int]
    
     
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: ItemID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, dropDescription dropDescriptionIn: String, examine examineIn: String, canPickUp canPickUpIn: Bool, properties propertiesIn: [PropertyId : Int]) {
-        id = idIn
+    init(id idIn: ID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, dropDescription dropDescriptionIn: String, examine examineIn: String, canPickUp canPickUpIn: Bool, properties propertiesIn: [PropertyId : Int]) {
         nameList = nameListIn
         roomDescription = roomDescriptionIn
         dropDescription = dropDescriptionIn
         examine = examineIn
         pickedUp = false
         canPickUp = canPickUpIn
-        properties = propertiesIn
+        
+        super.init(id: idIn, properties: propertiesIn)
     }
     
     
@@ -52,26 +50,25 @@ class Item {
             print(dropDescription)
         }
     }
+    
+    
+    //------------------------------------------------------------------------------
+    // takeTurn
+    //------------------------------------------------------------------------------
+    func takeTurn() {
+        return
+    }
 }
 
 
 //------------------------------------------------------------------------------
-// ItemID enum
+// propertyId enum
 //------------------------------------------------------------------------------
-enum ItemID {
-    case Geode
-    case Key
-    case Door
-    case Button
-    case Lamp
-    case Crystal
-    case Lantern
-}
-
 enum PropertyId {
     case Unlocked
     case StandingWithTrappers
     case FuseIsLit
     case Light
     case Fuel
+    case On
 }

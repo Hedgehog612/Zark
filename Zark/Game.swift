@@ -14,8 +14,8 @@ import Cocoa
 //------------------------------------------------------------------------------
 class Game {
     var player: Player
-    var locations: [LocationID: Location]
-    var items: [ItemID: Item]
+    var locations: [ID: Location]
+    var items: [ID: Item]
     
     
     //------------------------------------------------------------------------------
@@ -107,7 +107,8 @@ class Game {
             id: .ArchiveRoom,
             fullName: "Archive Room",
             roomDescription: "This room is crammed with records and files. They overflow from cabinets and spill across the ground.",
-            east: .DarkRoom
+            east: .DarkRoom,
+            contents: [.Lamp]
         )
 
 
@@ -149,7 +150,7 @@ class Game {
             dropDescription: "There is an old lantern here.",
             examine: "You examine the lantern. Oil level reference.",
             canPickUp: true,
-            properties: [.Fuel : 10]
+            properties: [.Fuel : 10, .On : 0]
         )
         
         
@@ -195,9 +196,9 @@ class Game {
     // addLocation
     // Creates a location and adds it to the world.
     //------------------------------------------------------------------------------
-    func addLocation(id: LocationID, fullName: String, roomDescription: String, north: LocationID? = nil, east: LocationID? = nil, south: LocationID? = nil, west: LocationID? = nil, northEast: LocationID? = nil, southEast: LocationID? = nil, southWest: LocationID? = nil, northWest: LocationID? = nil, contents: [ItemID] = []) {
+    func addLocation(id: ID, fullName: String, roomDescription: String, north: ID? = nil, east: ID? = nil, south: ID? = nil, west: ID? = nil, northEast: ID? = nil, southEast: ID? = nil, southWest: ID? = nil, northWest: ID? = nil, contents: [ID] = [], properties: [PropertyId: Int] = [:]) {
         // Create the lcoation and add it to the world
-        let location = Location(id: id, fullName: fullName, roomDescription: roomDescription, contents: contents)
+        let location = Location(id: id, fullName: fullName, roomDescription: roomDescription, contents: contents, properties: properties)
         locations[id] = location
         
         // Connect it to other locations
@@ -232,7 +233,7 @@ class Game {
     // addItem
     // Adds an item to the world
     //------------------------------------------------------------------------------
-    func addItem(id: ItemID, nameList: [String], roomDescription: String, dropDescription: String, examine: String, canPickUp: Bool = true, properties: [PropertyId : Int] = [:]) {
+    func addItem(id: ID, nameList: [String], roomDescription: String, dropDescription: String, examine: String, canPickUp: Bool = true, properties: [PropertyId : Int] = [:]) {
         let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, dropDescription: dropDescription, examine: examine, canPickUp: canPickUp, properties: properties)
         items[id] = item
     }
@@ -242,7 +243,7 @@ class Game {
     // locationFromId
     // Gets the location with a specified id.
     //------------------------------------------------------------------------------
-    func locationFromId(_ id: LocationID) -> Location {
+    func locationFromId(_ id: ID) -> Location {
         return locations[id]!
     }
     
@@ -251,7 +252,7 @@ class Game {
     // itemFromId
     // Returns the item with a specified id
     //------------------------------------------------------------------------------
-    func itemFromId(_ id: ItemID) -> Item {
+    func itemFromId(_ id: ID) -> Item {
         return items[id]!
     }
     
@@ -301,6 +302,10 @@ class Game {
             function(self)(Array(parts[1...]))
         } else {
             print("Command not recognized.")
+        }
+        
+        for item in items {
+            item.takeTurn()
         }
     }
     
