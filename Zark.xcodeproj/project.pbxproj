@@ -41,6 +41,7 @@
 		F47F0E5A233436FB00F323C9 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F47F0E5C2334370600F323C9 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		F47F0E5E2334370E00F323C9 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		FF6C86EB233975AF008EB518 /* Syntax */ = {isa = PBXFileReference; lastKnownFileType = text; path = Syntax; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +84,7 @@
 				F45A2C7F2337FFB500F5685C /* Key.swift */,
 				F45A2C8123393D4500F5685C /* Lantern.swift */,
 				F45A2C83233947C500F5685C /* Button.swift */,
+				FF6C86EB233975AF008EB518 /* Syntax */,
 			);
 			path = Zark;
 			sourceTree = "<group>";

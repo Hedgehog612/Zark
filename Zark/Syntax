@@ -1,0 +1,57 @@
+north
+go north
+get $item1
+pick up $item1
+use $item1
+unlock $item2 with $item1
+use $item1 on $item2
+open $item2 with $item1
+
+
+
+typealias CommandTemplate = (String, (Player) -> (Item?) -> (), (Item) -> (Item?) -> ())
+commands: CommandTemplate[] = [
+    ("pick up $item1",              getItem,            nil),
+    ("unlock $item2 with $item1",   nil,                unlock),
+]
+
+
+
+
+
+template is the working copy of the template string
+input is the working copy of the input string
+var item1: String?
+var item2: String?
+
+while template != nil
+
+    templatePart = first part of template
+    if input doesn't begin with templatePart
+        bail out
+
+    cut template part off template
+    cut matching part off input
+
+if input != nil
+    No match, bail out
+    
+Match, execute command
+
+
+
+
+
+match input
+
+if templatePart doesn't begin with $
+    if input begins with templatePart
+else
+    for all items
+        for all names of the item
+            does input begin with that name?
+                If yes, set .item1 or .item2 and return true
+
+return false
+
+
