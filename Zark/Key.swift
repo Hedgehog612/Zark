@@ -10,8 +10,8 @@ import Foundation
 
 
 class Key: Item {
-    func use() {
-        if Player.location.containsItem(.Door) {
+    override func use() {
+        if game.player.location.containsItem(.Door) {
             if game.itemFromId(.Door).properties[.Unlocked] == 1 {
                 print("The door is already unlocked.")
             } else {
@@ -20,7 +20,7 @@ class Key: Item {
                 game.itemFromId(.Door).roomDescription = "The northern door stands open."
                 game.itemFromId(.Door).properties[.Unlocked] = 1
             }
-        } else if Player.location.containsItem(.Geode) {
+        } else if game.player.location.containsItem(.Geode) {
             if game.itemFromId(.Door).properties[.Unlocked] == 1 {
                 print("The geode is already unlocked.")
             } else {
@@ -32,9 +32,4 @@ class Key: Item {
             print("There isn't anything to use the key on here.")
         }
     }
-    
-    override func takeTurn() {
-        print("Oh no! we're dangerously low on key fuel")
-    }
-
 }

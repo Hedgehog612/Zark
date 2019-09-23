@@ -133,13 +133,7 @@ class Player {
             print("I don't see the \(item.nameList[0]) here.")
             return
         }
-        switch item.id {
-        case .Key: Key.use()
-        case .Button: Button.use()
-        case .Lantern: Lantern.use()
-        default:
-            print("You can't do anything special with the \(item.nameList[0]).")
-        }
+        item.use()
     }
 }
 
