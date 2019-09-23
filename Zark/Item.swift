@@ -28,7 +28,7 @@ class Item: Entity {
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: ID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, dropDescription dropDescriptionIn: String, examine examineIn: String, canPickUp canPickUpIn: Bool, properties propertiesIn: [PropertyId : Int]) {
+    init(id idIn: ID, nameList nameListIn: [String], roomDescription roomDescriptionIn: String, dropDescription dropDescriptionIn: String, examine examineIn: String, canPickUp canPickUpIn: Bool = true, properties propertiesIn: [PropertyId : Int] = [:]) {
         nameList = nameListIn
         roomDescription = roomDescriptionIn
         dropDescription = dropDescriptionIn
@@ -49,6 +49,14 @@ class Item: Entity {
         } else {
             print(dropDescription)
         }
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // use
+    //------------------------------------------------------------------------------
+    func use() {
+        print("You can't do anything special with the \(nameList[0]).")
     }
     
     

@@ -108,31 +108,31 @@ class Game {
             fullName: "Archive Room",
             roomDescription: "This room is crammed with records and files. They overflow from cabinets and spill across the ground.",
             east: .DarkRoom,
-            contents: [.Lamp]
+            contents: [.Lantern]
         )
 
 
         //------------------------------------------------------------------------------
         // Create all the items
         //------------------------------------------------------------------------------
-        addItem(
+        addItem(Key(
             id: .Key,
             nameList: ["key", "large key", "ornate key", "large ornate key"],
             roomDescription: "There is a large, ornate key lying on the table.",
             dropDescription: "There is a large, ornate key here.",
             examine: "A large metal key decorated with curves and twists of metal along its length. The teeth are equally complex and strange."
-        )
+        ))
         
-        addItem(
+        addItem(Item(
             id: .Geode,
             nameList: ["rock", "large rock"],
             roomDescription: "The largest table holds a rock the size of a pumpkin. Strewn around it are chipped, ruined saws and grinders. You see a large keyhole set into one side of it.",
             dropDescription: "There is a large rock here.",
             examine: "You turn the rock over in your hands. It's lighter than you expected. You see a large keyhole set into one side of it.",
             canPickUp: false
-        )
+        ))
         
-        addItem(
+        addItem(Item(
             id: .Door,
             nameList: ["door"],
             roomDescription: "There is a sturdy, locked door set into the north wall.",
@@ -140,10 +140,10 @@ class Game {
             examine: "",
             canPickUp: false,
             properties: [.Unlocked : 0]
-        )
+        ))
         
         
-        addItem(
+        addItem(Lantern(
             id: .Lantern,
             nameList: ["lantern"],
             roomDescription: "There is an old lantern here.",
@@ -151,10 +151,10 @@ class Game {
             examine: "You examine the lantern. Oil level reference.",
             canPickUp: true,
             properties: [.Fuel : 10, .On : 0]
-        )
+        ))
         
         
-        addItem(
+        addItem(Item(
             id: .Lamp,
             nameList: ["lamp"],
             roomDescription: "An unlit lamp rests on the ground. ",
@@ -162,27 +162,27 @@ class Game {
             examine: "",
             canPickUp: false,
             properties: [.Light : 0]
-        )
+        ))
         
         
-        addItem(
+        addItem(Button(
             id: .Button,
             nameList: ["button"],
             roomDescription: "There's a blue button on the west wall. ",
             dropDescription: "",
             examine: "",
             canPickUp: false
-        )
+        ))
         
         
-        addItem(
+        addItem(Item(
             id: .Crystal,
             nameList: ["crystal"],
             roomDescription: "A purple crystal the size of your hand rests in one hemisphere of the geode. ",
             dropDescription: "There is a purple crystal here.",
             examine: "The crystal is beautiful, many-faceted, and shining.",
             properties: [.Unlocked : 0]
-        )
+        ))
         
         
         //------------------------------------------------------------------------------
@@ -233,9 +233,8 @@ class Game {
     // addItem
     // Adds an item to the world
     //------------------------------------------------------------------------------
-    func addItem(id: ID, nameList: [String], roomDescription: String, dropDescription: String, examine: String, canPickUp: Bool = true, properties: [PropertyId : Int] = [:]) {
-        let item = Item(id: id, nameList: nameList, roomDescription: roomDescription, dropDescription: dropDescription, examine: examine, canPickUp: canPickUp, properties: properties)
-        items[id] = item
+    func addItem(_ item: Item) {
+        items[item.id] = item
     }
     
     
@@ -280,8 +279,11 @@ class Game {
         "southwest":    goSouthWest,
         "northwest":    goNorthWest,
         "get":          get,
+        "grab":         get,
         "drop":         drop,
+        "dump":         drop,
         "examine":      examine,
+        "look at":      examine,
         "use":          use,
     ]
     
@@ -304,7 +306,7 @@ class Game {
             print("Command not recognized.")
         }
         
-        for item in items {
+        for item in items.values {
             item.takeTurn()
         }
     }

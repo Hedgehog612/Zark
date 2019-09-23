@@ -9,8 +9,8 @@
 import Cocoa
 
 class Lantern: Item {
-    func use() {
-        if Player.itemInInventory(.Lantern) == true {
+    override func use() {
+        if game.player.itemInInventory(.Lantern) == true {
                 if properties[.On] == 0 {
                     print("You turn on the lantern.")
                     properties[.On] = 1

@@ -12,8 +12,8 @@ class Button: Item {
     //------------------------------------------------------------------------------
     // useButton
     //------------------------------------------------------------------------------
-    func use() {
-        if Player.location.containsItem(.Button) {
+    override func use() {
+        if game.player.location.containsItem(.Button) {
             print("You press the button. Nothing seems to happen.")
             if game.itemFromId(.Lamp).properties[.Light] == 0 {
                 game.itemFromId(.Lamp).properties[.Light] = 1
