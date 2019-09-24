@@ -38,7 +38,7 @@ class Player {
     // move
     // This function moves the player between connected locations
     //------------------------------------------------------------------------------
-    func move(direction: Direction) {
+    func move(_ direction: Direction) {
         if let newLocation = location.connections[direction] {
             location = game.locationFromId(newLocation)
         } else {
@@ -47,22 +47,28 @@ class Player {
     }
     
     
+    func goNorth(item: Item?) { move(.North) }
+    func goEast(item: Item?)  { move(.East) }
+    func goSouth(item: Item?) { move(.South) }
+    func goWest(item: Item?)  { move(.West) }
+    
     //------------------------------------------------------------------------------
     // get
     // Picks up an item and puts it in the player's inventory
     //------------------------------------------------------------------------------
-    func get(name: String) {
-        guard let item = location.itemFromName(name: name) else {
-            print("Item not found")
+    func get(item: Item?) {
+        assert(item != nil)
+        if !location.containsItem(item!.id) {
+            print("\(item!.nameList[0]) is not in this location")
             return
         }
-        if !item.canPickUp {
+        if !item!.canPickUp {
             print("Cannot pick that up.")
-        } else {
-            location.contents.removeAll(where: { $0 == item.id })
-            inventory.append(item.id)
-            item.pickedUp = true
+            return
         }
+        location.contents.removeAll(where: { $0 == item!.id })
+        inventory.append(item!.id)
+        item!.pickedUp = true
     }
     
     
@@ -71,26 +77,14 @@ class Player {
     // Removes an item from the player's inventory and places it in the
     // player's location.
     //------------------------------------------------------------------------------
-    func drop(name: String) {
-        guard let item = findItem(name) else {
-            print("Item not found")
+    func drop(item: Item?) {
+        assert(item != nil)
+        if !inventory.contains(item!.id) {
+            print("You don't have the \(item!.nameList[0])")
             return
         }
-        inventory.removeAll(where: { $0 == item.id })
-        location.contents.append(item.id)
-    }
-    
-    
-    //------------------------------------------------------------------------------
-    // examine
-    // Gives more detailed information about an item in your inventory.
-    //------------------------------------------------------------------------------
-    func examine(name: String) {
-        guard let item = findItem(name) else {
-            print("Item not found")
-            return
-        }
-        print(item.examine)
+        inventory.removeAll(where: { $0 == item!.id })
+        location.contents.append(item!.id)
     }
     
     
@@ -119,22 +113,4 @@ class Player {
     func itemInInventory(_ itemID: ID) -> Bool {
         return inventory.contains(itemID)
     }
-    
-    
-    //------------------------------------------------------------------------------
-    // use
-    //------------------------------------------------------------------------------
-    func use(name: String) {
-        guard let item = game.itemFromName(name) else {
-            print("This isn't an item")
-            return
-        }
-        if !location.containsItem(item.id) && !itemInInventory(item.id) {
-            print("I don't see the \(item.nameList[0]) here.")
-            return
-        }
-        item.use()
-    }
 }
-
-

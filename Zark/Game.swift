@@ -43,14 +43,14 @@ class Game {
         //------------------------------------------------------------------------------
         // Create all the locations
         //------------------------------------------------------------------------------
-        addLocation(
+        addLocation(Location(
             id: .LockerRoom,
             fullName: "Locker room",
             roomDescription: "You are in a large empty room with some lockers. To the north is a sturdy wooden door.",
             north: .BriefingRoom
-        )
+        ))
         
-        addLocation(
+        addLocation(Location(
             id: .BriefingRoom,
             fullName: "Briefing room",
             roomDescription: "This room looks like a briefing room. There is a large table in the center of the room. To the south is a sturdy wooden door. To the east you see another room strewn with paper. To the west is a heavy airlock.",
@@ -58,58 +58,58 @@ class Game {
             south: .LockerRoom,
             west: .GeodeRoom,
             contents: [.Door]
-        )
+        ))
         
-        addLocation(
+        addLocation(Location(
             id: .MapRoom,
             fullName: "Map room",
             roomDescription: "The walls and tables in this room are covered in maps. They appear to be mostly depicting tectonics, excavations, and other geological data. To the west, you see the briefing room.",
             west: .BriefingRoom,
             contents: [.Key]
-            )
+            ))
         
-        addLocation(
+        addLocation(Location(
             id: .GeodeRoom,
             fullName: "Geode room",
             roomDescription: "This room appears to be some kind of laboratory. Clean metal tables are piled high with rough, chipped rocks and cutting equipment.",
             east: .BriefingRoom,
             contents: [.Geode]
-        )
+        ))
         
         
-        addLocation(
+        addLocation(Location(
             id: .MoonRoom,
             fullName: "Moon Pool room",
             roomDescription: "This circular room contains a thin walkway around a large pool, which occupies the majority of the space. Lights shine into the water, and you can faintly see the ocean floor through the water."
-        )
+        ))
         
         
-        addLocation(
+        addLocation(Location(
             id: .ViewingRoom,
             fullName: "Viewing Room",
             roomDescription: "The north side of this room is one clear glass wall. Outside, you see a sprawling growth of coral. Occasionally, a fish flits by.",
             south: .BriefingRoom,
             west: .DarkRoom,
             contents: [.Button]
-        )
+        ))
         
         
-        addLocation(
+        addLocation(Location(
             id: .DarkRoom,
             fullName: "Dark Room",
             roomDescription: "The corridor ahead of you is pitch-black. You can't see any futher.",
             east: .ViewingRoom,
             contents: [.Lamp]
-        )
+        ))
         
         
-        addLocation(
+        addLocation(Location(
             id: .ArchiveRoom,
             fullName: "Archive Room",
             roomDescription: "This room is crammed with records and files. They overflow from cabinets and spill across the ground.",
             east: .DarkRoom,
             contents: [.Lantern]
-        )
+        ))
 
 
         //------------------------------------------------------------------------------
@@ -129,7 +129,8 @@ class Game {
             roomDescription: "The largest table holds a rock the size of a pumpkin. Strewn around it are chipped, ruined saws and grinders. You see a large keyhole set into one side of it.",
             dropDescription: "There is a large rock here.",
             examine: "You turn the rock over in your hands. It's lighter than you expected. You see a large keyhole set into one side of it.",
-            canPickUp: false
+            canPickUp: false,
+            properties: [.Unlocked : 0]
         ))
         
         addItem(Item(
@@ -196,36 +197,8 @@ class Game {
     // addLocation
     // Creates a location and adds it to the world.
     //------------------------------------------------------------------------------
-    func addLocation(id: ID, fullName: String, roomDescription: String, north: ID? = nil, east: ID? = nil, south: ID? = nil, west: ID? = nil, northEast: ID? = nil, southEast: ID? = nil, southWest: ID? = nil, northWest: ID? = nil, contents: [ID] = [], properties: [PropertyId: Int] = [:]) {
-        // Create the lcoation and add it to the world
-        let location = Location(id: id, fullName: fullName, roomDescription: roomDescription, contents: contents, properties: properties)
-        locations[id] = location
-        
-        // Connect it to other locations
-        if north != nil {
-            location.connect(direction: .North, destination: north!)
-        }
-        if east != nil {
-            location.connect(direction: .East, destination: east!)
-        }
-        if south != nil {
-            location.connect(direction: .South, destination: south!)
-        }
-        if west != nil {
-            location.connect(direction: .West, destination: west!)
-        }
-        if northEast != nil {
-            location.connect(direction: .Northeast, destination: northEast!)
-        }
-        if southEast != nil {
-            location.connect(direction: .Southeast, destination: southEast!)
-        }
-        if southWest != nil {
-            location.connect(direction: .Southwest, destination: southWest!)
-        }
-        if northWest != nil {
-            location.connect(direction: .Northwest, destination: northWest!)
-        }
+    func addLocation(_ location: Location) {
+        locations[location.id] = location
     }
     
     
@@ -263,92 +236,116 @@ class Game {
     func itemFromName(_ name: String) -> Item? {
         return items.values.first(where: { $0.nameList.contains(name) })
     }
+    
+    typealias CommandTemplate = (String, ((Player) -> (Item?) -> ())?, ((Item) -> (Item?) ->())?)
+    
+    let commands: [CommandTemplate] = [
+        ("north",                       Player.goNorth,      nil),
+        ("go north",                    Player.goNorth,      nil),
+        ("n",                           Player.goNorth,      nil),
+        ("east",                        Player.goEast,       nil),
+        ("go east",                     Player.goEast,       nil),
+        ("e",                           Player.goEast,       nil),
+        ("west",                        Player.goWest,       nil),
+        ("go west",                     Player.goWest,       nil),
+        ("w",                           Player.goWest,       nil),
+        ("south",                       Player.goSouth,      nil),
+        ("go south",                    Player.goSouth,      nil),
+        ("s",                           Player.goSouth,      nil),
+        ("get $item1",                  Player.get,          nil),
+        ("take $item1",                 Player.get,          nil),
+        ("use $item1",                  nil,                 Item.use),
+        ("examine $item1",              nil,                 Item.examine),
+        ("pick up $item1",              Player.get,          nil),
+        ("unlock $item2 with $item1",   nil,                 Item.use),
+        ("open $item2 with $item1",     nil,                 Item.use),
+        ("use $item1 on $item2",        nil,                 Item.use),
+        ("drop $item1",                 Player.drop,         nil)
+        ]
 
-    
-    //------------------------------------------------------------------------------
-    // commands
-    // Lays out what commands the game can parse.
-    //------------------------------------------------------------------------------
-    let commands: [String: (Game) -> ([String]) -> ()] = [
-        "north":        goNorth,
-        "east":         goEast,
-        "south":        goSouth,
-        "west":         goWest,
-        "northeast":    goNorthEast,
-        "southeast":    goSouthEast,
-        "southwest":    goSouthWest,
-        "northwest":    goNorthWest,
-        "get":          get,
-        "grab":         get,
-        "drop":         drop,
-        "dump":         drop,
-        "examine":      examine,
-        "look at":      examine,
-        "use":          use,
-    ]
-    
-    
     //------------------------------------------------------------------------------
     // takeTurn
     // Handles the basic turn loop and accepts commands.
     //------------------------------------------------------------------------------
     func takeTurn() {
+        // Where are we?
         print("\n")
         player.location.describe()
+        
+        // Get a valid input string.
+        // For unknown reasons, this occasionally returns nil, so keep hittin it until
+        // we get something sensible.
         var input: String?
         while input == nil {
             input = readLine()
         }
-        let parts = input!.lowercased().components(separatedBy: " ")
-        if let function = commands[parts[0]] {
-            function(self)(Array(parts[1...]))
-        } else {
-            print("Command not recognized.")
+        
+        var item1: Item?
+        var item2: Item?
+        
+        // Try every command template in turn and see if it matches the input line
+        commandLoop: for (template, playerfunc, itemfunc) in commands {
+            // Make a copy of the input that we can eat as we match parts of it
+            var workingInput = input!.lowercased()
+            
+            // We're going to process the template word by word. Note that one word
+            // of the template may match several words in the input.
+            var templateParts = template.components(separatedBy: " ")
+            
+            // Keep matching template words until it's all used up
+            matchLoop: while !templateParts.isEmpty && !workingInput.isEmpty {
+                let currentPart = templateParts[0]
+                while workingInput.first == " " {
+                    workingInput.remove(at: workingInput.startIndex)
+                }
+                
+                // If the template word doesn't begin with $, it needs an exact match
+                if !currentPart.hasPrefix("$") {
+                    if workingInput.hasPrefix(currentPart) {
+                        workingInput.removeFirst(templateParts[0].count)
+                        templateParts.remove(at:0)
+                        continue matchLoop
+                    } else {
+                        continue commandLoop
+                    }
+                }
+                
+                //This checks all possible names you can refer to all items by
+                for item in items.values {
+                    for name in item.nameList {
+                        
+                        //Found a match, remove matching section
+                        if workingInput.hasPrefix(name) {
+                            if currentPart == "$item1" {
+                                item1 = item
+                            } else {
+                                item2 = item
+                            }
+                            workingInput.removeFirst(name.count)
+                            templateParts.remove(at:0)
+                            continue matchLoop
+                        }
+                    }
+                }
+            }
+            
+            // One of the strings is empty. Hopefully they both are.
+            if !templateParts.isEmpty || !workingInput.isEmpty {
+                continue commandLoop
+            }
+            
+            // We found a match. Execute it
+            if playerfunc != nil {
+                playerfunc!(player)(item1)
+            } else {
+                assert(itemfunc != nil)
+                assert(item1 != nil)
+                itemfunc!(item1!)(item2)
+            }
+            return
         }
         
-        for item in items.values {
-            item.takeTurn()
-        }
-    }
-    
-    
-    //------------------------------------------------------------------------------
-    // Command handlers. These are mostly just stubs.
-    //------------------------------------------------------------------------------
-    func goNorth(args: [String]) {
-        player.move(direction: .North)
-    }
-    func goEast(args: [String]) {
-        player.move(direction: .East)
-    }
-    func goSouth(args: [String]) {
-        player.move(direction: .South)
-    }
-    func goWest(args: [String]) {
-        player.move(direction: .West)
-    }
-    func goNorthEast(args: [String]) {
-        player.move(direction: .Northeast)
-    }
-    func goSouthEast(args: [String]) {
-        player.move(direction: .Southeast)
-    }
-    func goSouthWest(args: [String]) {
-        player.move(direction: .Southwest)
-    }
-    func goNorthWest(args: [String]) {
-        player.move(direction: .Northwest)
-    }
-    func get(args: [String]) {
-        player.get(name: args[0])
-    }
-    func drop(args: [String]) {
-        player.drop(name: args[0])
-    }
-    func examine(args: [String]) {
-        player.examine(name: args[0])
-    }
-    func use(args: [String]) {
-        player.use(name: args[0])
+        // No match
+        print("Error: could not find a matching command")
     }
 }

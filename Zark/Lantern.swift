@@ -9,7 +9,7 @@
 import Cocoa
 
 class Lantern: Item {
-    override func use() {
+    override func use(item: Item?) {
         if game.player.itemInInventory(.Lantern) == true {
                 if properties[.On] == 0 {
                     print("You turn on the lantern.")
@@ -31,4 +31,17 @@ class Lantern: Item {
                 properties[.On] = 0
             }
         }
+    
+    
+    override func examine(item: Item?) {
+        if properties[.Fuel]! > 7 {
+            print("There's still plenty of fuel in the lantern.")
+        } else {
+            if properties[.Fuel]! > 3 {
+                print("The lantern's about half-empty.")
+            } else {
+                print("The lantern's almost out of fuel!")
+            }
+        }
     }
+}

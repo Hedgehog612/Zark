@@ -55,7 +55,7 @@ class Item: Entity {
     //------------------------------------------------------------------------------
     // use
     //------------------------------------------------------------------------------
-    func use() {
+    func use(item: Item?) {
         print("You can't do anything special with the \(nameList[0]).")
     }
     
@@ -65,6 +65,16 @@ class Item: Entity {
     //------------------------------------------------------------------------------
     func takeTurn() {
         return
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // examine
+    // Gives more detailed information about an item in your inventory.
+    //------------------------------------------------------------------------------
+    func examine(item: Item?) {
+        assert(item == nil)
+        print(examine)
     }
 }
 

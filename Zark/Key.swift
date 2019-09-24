@@ -10,7 +10,7 @@ import Foundation
 
 
 class Key: Item {
-    override func use() {
+    override func use(item: Item?) {
         if game.player.location.containsItem(.Door) {
             if game.itemFromId(.Door).properties[.Unlocked] == 1 {
                 print("The door is already unlocked.")
@@ -21,7 +21,7 @@ class Key: Item {
                 game.itemFromId(.Door).properties[.Unlocked] = 1
             }
         } else if game.player.location.containsItem(.Geode) {
-            if game.itemFromId(.Door).properties[.Unlocked] == 1 {
+            if game.itemFromId(.Geode).properties[.Unlocked] == 1 {
                 print("The geode is already unlocked.")
             } else {
                 game.locationFromId(.GeodeRoom).contents = [.Crystal]

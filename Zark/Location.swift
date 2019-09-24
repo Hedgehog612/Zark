@@ -25,13 +25,39 @@ class Location: Entity {
     //------------------------------------------------------------------------------
     // Initializer
     //------------------------------------------------------------------------------
-    init(id idIn: ID, fullName fullNameIn: String, roomDescription descriptionIn: String, contents contentsIn: [ID] = [], properties propertiesIn: [PropertyId: Int]) {
+    init(id idIn: ID, fullName fullNameIn: String, roomDescription descriptionIn: String, north: ID? = nil, east: ID? = nil, south: ID? = nil, west: ID? = nil, northEast: ID? = nil, southEast: ID? = nil, southWest: ID? = nil, northWest: ID? = nil, contents contentsIn: [ID] = [], properties propertiesIn: [PropertyId: Int]? = [:]) {
         fullName = fullNameIn
         roomDescription = descriptionIn
         connections = [:]
         contents = contentsIn
         
-        super.init(id: idIn, properties: propertiesIn)
+        super.init(id: idIn, properties: (propertiesIn)!)
+        
+        // Connect it to other locations
+        if north != nil {
+            connect(direction: .North, destination: north!)
+        }
+        if east != nil {
+            connect(direction: .East, destination: east!)
+        }
+        if south != nil {
+            connect(direction: .South, destination: south!)
+        }
+        if west != nil {
+            connect(direction: .West, destination: west!)
+        }
+        if northEast != nil {
+            connect(direction: .Northeast, destination: northEast!)
+        }
+        if southEast != nil {
+            connect(direction: .Southeast, destination: southEast!)
+        }
+        if southWest != nil {
+            connect(direction: .Southwest, destination: southWest!)
+        }
+        if northWest != nil {
+            connect(direction: .Northwest, destination: northWest!)
+        }
     }
     
     
