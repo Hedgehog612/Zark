@@ -16,6 +16,7 @@ class Game {
     var player: Player
     var locations: [ID: Location]
     var items: [ID: Item]
+    var creatures: [ID: Creature]
     
     
     //------------------------------------------------------------------------------
@@ -30,6 +31,9 @@ class Game {
         
         // Items
         items = [:]
+        
+        //Creatures
+        creatures = [:]
     }
     
     
@@ -187,6 +191,17 @@ class Game {
         
         
         //------------------------------------------------------------------------------
+        // Create all the creatures
+        //------------------------------------------------------------------------------
+        addCreature(Creature(
+            id: .Orc,
+            nameList: ["Orc"],
+            health: 10,
+            location: .ArchiveRoom,
+            behavior: 1
+        ))
+        
+        //------------------------------------------------------------------------------
         // Set up the player
         //------------------------------------------------------------------------------
         player.setLocation(.LockerRoom)
@@ -208,6 +223,15 @@ class Game {
     //------------------------------------------------------------------------------
     func addItem(_ item: Item) {
         items[item.id] = item
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // addCreature
+    // Adds a creature to the world
+    //------------------------------------------------------------------------------
+    func addCreature(_ creature: Creature) {
+        creatures[creature.id] = creature
     }
     
     
@@ -271,6 +295,15 @@ class Game {
         // Where are we?
         print("\n")
         player.location.describe()
+        for item in items.values {
+            item.takeTurn()
+        }
+        for location in locations.values {
+            location.takeTurn()
+        }
+        for creature in creatures.values {
+            creature.takeTurn()
+        }
         
         // Get a valid input string.
         // For unknown reasons, this occasionally returns nil, so keep hittin it until

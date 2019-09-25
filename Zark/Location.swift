@@ -98,12 +98,21 @@ class Location: Entity {
         }
     }
     
+    
     //------------------------------------------------------------------------------
     // containsItem
     // Returns whether or not a specified item is in this location.
     //------------------------------------------------------------------------------
     func containsItem(_ itemID: ID) -> Bool {
         return contents.contains(itemID)
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // takeTurn
+    //------------------------------------------------------------------------------
+    func takeTurn() {
+        return
     }
 }
 

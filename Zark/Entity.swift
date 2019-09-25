@@ -46,4 +46,7 @@ enum ID {
     case Button
     case Door
     case Crystal
+    
+    //These are the creatures
+    case Orc
 }
