@@ -9,31 +9,31 @@
 import Cocoa
 
 class Lantern: Item {
-    override func use(item: Item?) {
-        if game.player.itemInInventory(.Lantern) == true {
-                if properties[.On] == 0 {
+    override func use(item: Item) {
+        if game.world.player.itemInInventory(.Lantern) == true {
+                if properties[.Light] == 0 {
                     print("You turn on the lantern.")
-                    properties[.On] = 1
+                    properties[.Light] = 1
                 } else {
                     print("You turn off the lantern.")
-                    properties[.On] = 0
+                    properties[.Light] = 0
                 }
             }
         }
         
         override func takeTurn() {
-            if properties[.Fuel]! > 0 && properties[.On] == 1 {
+            if properties[.Fuel]! > 0 && properties[.Light] == 1 {
                 print("The lantern flickers brightly.")
                 properties[.Fuel]! -= 1
             }
-            if properties[.Fuel] == 0 && properties[.On] == 1 {
+            if properties[.Fuel] == 0 && properties[.Light] == 1 {
                 print("The lantern goes out!")
-                properties[.On] = 0
+                properties[.Light] = 0
             }
         }
     
     
-    override func examine(item: Item?) {
+    override func examineThis() {
         if properties[.Fuel]! > 7 {
             print("There's still plenty of fuel in the lantern.")
         } else {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Entity {
+class Entity: Codable {
     var id: ID
     var properties: [PropertyId: Int]
     
@@ -27,7 +27,8 @@ class Entity {
 //------------------------------------------------------------------------------
 // ID enum
 //------------------------------------------------------------------------------
-enum ID {
+enum ID: String, Codable {
+    
     //These are the locations
     case LockerRoom
     case BriefingRoom
@@ -37,6 +38,34 @@ enum ID {
     case DarkRoom
     case ArchiveRoom
     case MoonRoom
+    case HospitalRoom
+    case SupplyRoom
+    case ScuffleRoom
+    case LogRoom
+    case DarkEntranceRoom
+    case BoilerRoom
+    case ObservationDeckRoom
+    case PlatformRoom
+    case SplitRoom
+    case MonitoringStationRoom
+    case CatwalkOutRoom
+    case EngineRoom
+    case OfficeRoom
+    case EngineOfficeRoom
+    case EngineNorthRoom
+    case SealedExitRoom
+    case ArchiveCERoom
+    case ArchiveNERoom
+    case ArchiveLERoom
+    case ArchiveCNRoom
+    case ArchiveNNRoom
+    case OrcRoom
+    case ArchiveCGRoom
+    case ArchiveNGRoom
+    case ArchiveLGRoom
+    case GeneratorRoom
+    case TunnelOneRoom
+    case TunnelTwoRoom
     
     //These are the items
     case Lamp
@@ -46,6 +75,8 @@ enum ID {
     case Button
     case Door
     case Crystal
+    case Map
+    case Keycard
     
     //These are the creatures
     case Orc

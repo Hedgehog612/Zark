@@ -10,7 +10,7 @@ import Foundation
 
 var gameEnd = false
 let game = Game()
-game.buildWorld()
+game.world.buildWorld()
 while !gameEnd {
-    game.takeTurn()
+    game.world.takeTurn()
 }

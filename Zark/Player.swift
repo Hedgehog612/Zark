@@ -12,7 +12,7 @@ import Cocoa
 //------------------------------------------------------------------------------
 // Player
 //------------------------------------------------------------------------------
-class Player {
+class Player: Codable {
     var inventory: [ID]
     var location: Location!
     
@@ -30,7 +30,7 @@ class Player {
     // Move us to a specified location.
     //------------------------------------------------------------------------------
     func setLocation(_ locationId: ID) {
-        location = game.locationFromId(locationId)
+        location = game.world.locationFromId(locationId)
     }
     
     
@@ -39,36 +39,54 @@ class Player {
     // This function moves the player between connected locations
     //------------------------------------------------------------------------------
     func move(_ direction: Direction) {
+        if !location.onExit() {
+            return
+        }
         if let newLocation = location.connections[direction] {
-            location = game.locationFromId(newLocation)
+            if game.world.locationFromId(newLocation).onEnter() {
+                location = game.world.locationFromId(newLocation)
+            }
         } else {
             print("Cannot move there")
         }
     }
     
     
-    func goNorth(item: Item?) { move(.North) }
-    func goEast(item: Item?)  { move(.East) }
-    func goSouth(item: Item?) { move(.South) }
-    func goWest(item: Item?)  { move(.West) }
+    func goNorth() { move(.North) }
+    func goEast()  { move(.East) }
+    func goSouth() { move(.South) }
+    func goWest()  { move(.West) }
+    func goUp() { move(.Up) }
+    func goDown() {move(.Down) }
     
     //------------------------------------------------------------------------------
     // get
     // Picks up an item and puts it in the player's inventory
     //------------------------------------------------------------------------------
-    func get(item: Item?) {
-        assert(item != nil)
-        if !location.containsItem(item!.id) {
-            print("\(item!.nameList[0]) is not in this location")
+    func get(item: Item) {
+        if !location.containsItem(item.id) {
+            print("\(item.nameList[0]) is not in this location")
             return
         }
-        if !item!.canPickUp {
+        if !item.canPickUp {
             print("Cannot pick that up.")
             return
         }
-        location.contents.removeAll(where: { $0 == item!.id })
-        inventory.append(item!.id)
-        item!.pickedUp = true
+        if item.onGet() == false {
+            return
+        }
+        location.contents.removeAll(where: { $0 == item.id })
+        inventory.append(item.id)
+        item.pickedUp = true
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // wait
+    // does nothing
+    //------------------------------------------------------------------------------
+    func wait() {
+        return
     }
     
     
@@ -77,14 +95,16 @@ class Player {
     // Removes an item from the player's inventory and places it in the
     // player's location.
     //------------------------------------------------------------------------------
-    func drop(item: Item?) {
-        assert(item != nil)
-        if !inventory.contains(item!.id) {
-            print("You don't have the \(item!.nameList[0])")
+    func drop(item: Item) {
+        if item.onDrop() == false {
             return
         }
-        inventory.removeAll(where: { $0 == item!.id })
-        location.contents.append(item!.id)
+        if !inventory.contains(item.id) {
+            print("You don't have the \(item.nameList[0])")
+            return
+        }
+        inventory.removeAll(where: { $0 == item.id })
+        location.contents.append(item.id)
     }
     
     
@@ -94,7 +114,7 @@ class Player {
     // returns it.
     //------------------------------------------------------------------------------
     func findItem(_ name: String) -> Item? {
-        guard let item = game.itemFromName(name) else {
+        guard let item = game.world.itemFromName(name) else {
             return nil
         }
         if inventory.contains(item.id) {
@@ -113,4 +133,94 @@ class Player {
     func itemInInventory(_ itemID: ID) -> Bool {
         return inventory.contains(itemID)
     }
+    
+    //------------------------------------------------------------------------------
+    // takeTurn
+    //------------------------------------------------------------------------------
+    func takeTurn() {
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // gimme
+    //------------------------------------------------------------------------------
+    func gimme(item: Item) {
+        inventory.append(item.id)
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // teleport
+    //------------------------------------------------------------------------------
+    func teleport(newLocation: Location) {
+        location = newLocation
+    }
+   
+    
+    //------------------------------------------------------------------------------
+    // inventory
+    //------------------------------------------------------------------------------
+    func getInventory() {
+        print("You are carrying the following items:")
+        for object in inventory {
+            print(game.world.itemFromId(object).nameList[0])
+        }
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    // givingLight
+    //------------------------------------------------------------------------------
+    func givingLight() -> Bool {
+        for item in inventory {
+            if game.world.itemFromId(item).properties[.Light] == 1 {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    
+
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    // Encoding and decoding
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    
+    
+    // Our coding keys
+    enum CodingKeys: String, CodingKey {
+        case location
+        case inventory
+    }
+    
+
+    //------------------------------------------------------------------------------
+    // encode
+    //------------------------------------------------------------------------------
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(location.id, forKey: .location)
+        try container.encode(inventory, forKey: .inventory)
+    }
+    
+
+    //------------------------------------------------------------------------------
+    // decode
+    //------------------------------------------------------------------------------
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        location = try game.world.locationFromId(values.decode(ID.self, forKey: .location))
+        inventory = try values.decode([ID].self, forKey: .inventory)
+    }
+    
+    
+    
 }
+
+//TODO:
+//Two chapters
+//Research UDub Bothell
+//Teleport function

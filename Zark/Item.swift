@@ -38,7 +38,7 @@ class Item: Entity {
         
         super.init(id: idIn, properties: propertiesIn)
     }
-    
+
     
     //------------------------------------------------------------------------------
     // Describe
@@ -55,7 +55,7 @@ class Item: Entity {
     //------------------------------------------------------------------------------
     // use
     //------------------------------------------------------------------------------
-    func use(item: Item?) {
+    func use(item: Item) {
         print("You can't do anything special with the \(nameList[0]).")
     }
     
@@ -72,21 +72,102 @@ class Item: Entity {
     // examine
     // Gives more detailed information about an item in your inventory.
     //------------------------------------------------------------------------------
-    func examine(item: Item?) {
-        assert(item == nil)
+    func examineThis() {
         print(examine)
     }
+    
+    
+    //------------------------------------------------------------------------------
+    // onDrop
+    //------------------------------------------------------------------------------
+    func onDrop() -> Bool {
+        if properties[.Cursed] == 1 {
+            print("You are compelled to hold on to the \(nameList[0]).")
+            return false
+        }
+        return true
+    }
+    
+    //------------------------------------------------------------------------------
+    // onGet
+    //------------------------------------------------------------------------------
+    func onGet() -> Bool {
+        if properties[.Hot] == 1 {
+            print("The \(nameList[0]) is too hot to hold!")
+            return false
+        }
+        return true
+    }
+    
+    
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    // Encoding and decoding
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    
+    
+    // Our coding keys
+    enum CodingKeys: String, CodingKey {
+        case id
+        case properties
+        case nameList
+        case roomDescription
+        case dropDescription
+        case examine
+        case pickedUp
+        case canPickUp
+    }
+    
+
+    //------------------------------------------------------------------------------
+    // encode
+    //------------------------------------------------------------------------------
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(properties, forKey: .properties)
+        try container.encode(nameList, forKey: .nameList)
+        try container.encode(roomDescription, forKey: .roomDescription)
+        try container.encode(dropDescription, forKey: .dropDescription)
+        try container.encode(examine, forKey: .examine)
+        try container.encode(pickedUp, forKey: .pickedUp)
+        try container.encode(canPickUp, forKey: .canPickUp)
+    }
+    
+
+    //------------------------------------------------------------------------------
+    // decode
+    //------------------------------------------------------------------------------
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let idTemp = try values.decode(ID.self, forKey: .id)
+        let propertiesTemp = try values.decode([PropertyId: Int].self, forKey: .properties)
+        
+        nameList = try values.decode([String].self, forKey: .nameList)
+        roomDescription = try values.decode(String.self, forKey: .roomDescription)
+        dropDescription = try values.decode(String.self, forKey: .dropDescription)
+        examine = try values.decode(String.self, forKey: .examine)
+        pickedUp = try values.decode(Bool.self, forKey: .pickedUp)
+        canPickUp = try values.decode(Bool.self, forKey: .canPickUp)
+
+        super.init(id: idTemp, properties: propertiesTemp)
+    }
+    
 }
 
 
 //------------------------------------------------------------------------------
 // propertyId enum
 //------------------------------------------------------------------------------
-enum PropertyId {
+enum PropertyId: String, Codable {
     case Unlocked
     case StandingWithTrappers
     case FuseIsLit
     case Light
     case Fuel
-    case On
+    case Dark
+    case Hunt
+    case Hot
+    case Cursed
 }
